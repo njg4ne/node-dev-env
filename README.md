@@ -3,6 +3,14 @@
 
 The templates in this repository are intended to be modified for support to develop in a constent dev environment accross platforms.
 
+## Usage
+- First, use `docker-compose run git-service`, which should not authenticate. Unless you already put some ssh keys in `secrets/`, use `ssh-keygen` with `-C "github-email@site.com"`, `-t ed25519` and `-f secrets/key-name-you-choose`. Then `exit` bash. Modify the keyname in both `command:` sections in `docker-compose.yml`. Also be sure to change your name and email in `gitfile`. Once you add the public key to your GitHub in the browser, the authentication should succeed from now on.
+- You should be able to use either of these commands to attach to a container which exits when you are done, saving files in the mapped volumes:
+    - `docker-compose run node-service`
+    - `docker-compose run git-service`
+- For shorthand, dot source a call to the aliasing script by running `. shorthand.sh`. Note that if you restart your original terminal, you will have to run this again.
+- Now you should be able to use `dcRun git` or `dcRun node`
+git remote set-url origin user@example.com:PATH/REPOSITORY
 ## File Permissions and Windows
 
 Certain differences may exist based on the permissions you have in your text editor and command prompt. Using the packaged "node" user and their corresponging UID and GID seems to work for most systems. However, if you run into permissions issues, consider the implications of the user id and group id that you are using when you create files in the GUI.
