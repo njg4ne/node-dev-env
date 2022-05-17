@@ -1,19 +1,21 @@
 version: '3'
 services:
-  dev-service:
-    container_name: node-development-container
+  node-service:
+    container_name: node-container
     build: .
+    command: [".ssh/n-k2"]
     ports:
     - "80:3000"
-    image: node-development-image
+    image: node-dev-env-img
     volumes:
     - ./src:/home/node/src
     - ./gitfile:/home/node/.gitconfig
-    - ./auth.sh:/home/node/auth
+    - ./auth.sh:/home/node/auth.sh
     - ./secrets:/home/node/.ssh
   git-service:
-    container_name: git-development-container
+    container_name: git-container
     build: .
-    image: git-development-image
+    command: ["secrets/n-k2", "cp gitfile .gitconfig"]
+    image: node-dev-env-img
     volumes:
     - .:/home/node

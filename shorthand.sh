@@ -2,7 +2,7 @@
 
 # new
 alias c=clear;
-dcRun() { docker-compose run $1-service $2; };
+dcRun() { docker-compose run $1-service; };
 
 # deprecated
 alias dcUp="docker-compose up -d";

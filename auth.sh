@@ -11,4 +11,3 @@ if [[ $ssh_output == *"successfull"* ]]; then
   else
   echo "Auth Failure!"
 fi
-#echo $date
