@@ -3,9 +3,6 @@ services:
   dev-service:
     container_name: node-development-container
     build: .
-    tty: true
-    stdin_open: true
-    command: bash #-c ". auth .ssh/zk2;$SHELL"
     ports:
     - "80:3000"
     image: node-development-image
@@ -17,9 +14,6 @@ services:
   git-service:
     container_name: git-development-container
     build: .
-    tty: true
-    stdin_open: true
-    command: bash -c "cp gitfile .gitconfig;. auth.sh secrets/n-k19-dwy;$SHELL"
     image: git-development-image
     volumes:
     - .:/home/node
