@@ -3,9 +3,11 @@ services:
   node-service:
     container_name: node-container
     build: .
+    stdin_open: true # applies only to attaching
+    tty: true        # applies only to attaching
     command: [".ssh/n-k2"]
     ports:
-    - "80:3000"
+    - "80:8080"
     image: node-dev-env-img
     volumes:
     - ./src:/home/node/src
