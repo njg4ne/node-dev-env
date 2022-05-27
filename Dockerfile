@@ -1,6 +1,6 @@
 FROM node:slim as node-base
 RUN apt update -y
-# RUN apt install git expect -y
+RUN apt install git -y
 RUN echo 'root:dock' | chpasswd
 USER node
 ENV NODEHOME /home/node
@@ -19,5 +19,5 @@ USER node
 FROM node-base as node-git
 ENTRYPOINT ["bash", "-c", "$0; $SHELL", "cp gitfile .gitconfig" ]
 
-FROM node-base as node
+FROM react-vite as node
 ENTRYPOINT ["bash", "-c", "$0;. auth.sh $NODEHOME/.ssh/$KEYNAME; $SHELL", "cp gitfile .gitconfig" ]
