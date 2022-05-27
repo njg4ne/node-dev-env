@@ -2,6 +2,10 @@
 
 # new
 alias c=clear;
+
+dcGit() { docker-compose run --rm -e KEYNAME=$1 git-service; };
+dcDev() { dcUp $1-service; docker attach $1-container; };
+
 dcRun() { docker-compose run $1-service; };
 
 # deprecated

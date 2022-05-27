@@ -1,13 +1,19 @@
 version: '3'
 services:
   node-service:
+    environment:
+      - KEYNAME
     container_name: node-container
-    build: .
+    build:
+      context: .
+      target: node
     stdin_open: true # applies only to attaching
     tty: true        # applies only to attaching
-    command: [".ssh/n-k2"]
+    command: []
     ports:
-    - "80:8080"
+    - "8080:8080"
+    - "3000:3000"
+    - "80:80"
     image: node-dev-env-img
     volumes:
     - ./src:/home/node/src
@@ -15,9 +21,15 @@ services:
     - ./auth.sh:/home/node/auth.sh
     - ./secrets:/home/node/.ssh
   git-service:
+    environment:
+      - KEYNAME
     container_name: git-container
-    build: .
-    command: ["secrets/n-k2", "cp gitfile .gitconfig"]
+    stdin_open: true # applies only to attaching
+    tty: true        # applies only to attaching
+    build:
+      context: .
+      target: node-git
+    command: []
     image: node-dev-env-img
     volumes:
     - .:/home/node
