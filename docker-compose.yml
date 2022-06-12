@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   node-service:
     environment:
@@ -8,28 +8,56 @@ services:
       context: .
       target: node
     stdin_open: true # applies only to attaching
-    tty: true        # applies only to attaching
+    tty: true # applies only to attaching
     command: []
     ports:
-    - "8080:8080"
-    - "3000:3000"
-    - "80:80"
+      - "80:8080"
+      - "3000:3000"
+      - "3001:3001"
+    # - "80:80"
     image: node-dev-env-img
     volumes:
-    - ./src:/home/node/src
-    - ./gitfile:/home/node/.gitconfig
-    - ./auth.sh:/home/node/auth.sh
-    - ./secrets:/home/node/.ssh
+      - ./src:/home/node/src
+      - ./gitfile:/home/node/.gitconfig
+      - ./auth.sh:/home/node/auth.sh
+      - ./secrets:/home/node/.ssh
   git-service:
     environment:
       - KEYNAME
     container_name: git-container
     stdin_open: true # applies only to attaching
-    tty: true        # applies only to attaching
+    tty: true # applies only to attaching
     build:
       context: .
       target: node-git
     command: []
     image: node-dev-env-img
     volumes:
-    - .:/home/node
+      - .:/home/node
+  www-service:
+    container_name: www-container
+    stdin_open: true # applies only to attaching
+    tty: true # applies only to attaching
+    ports:
+      - "80:80"
+    image: nginx:alpine
+    volumes:
+      - .:/home/node
+  fullstack-service:
+    extends: node-service
+    build:
+      context: .
+      target: fullstack
+    image: fullstack-img
+    container_name: fullstack-container
+    depends_on:
+      - db
+    links:
+      - db
+  db:
+    container_name: postgres-container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: node
+      POSTGRES_PASSWORD: dock
